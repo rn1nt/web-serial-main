@@ -18,11 +18,11 @@ const collator = new Intl.Collator(undefined, {
 let QueryCommandList = [];
 var autoSend = { staus: false };
 
-var autoSend = new Proxy([], {
-  set: function() {
-      console.log('BB02220011DF3000E2806894000040018F22958C7C78A97E');
-  }
-});
+// var autoSend = new Proxy([], {
+//   set: function() {
+//       console.log('BB02220011DF3000E2806894000040018F22958C7C78A97E');
+//   }
+// });
 
 
 function sleep(ms) {
@@ -256,14 +256,14 @@ document.querySelector("#connect").addEventListener("click", async () => {
     }
   }
 
-  if (device_connected)
-  {
-    sendQuerycCommand();
-  }
-  else 
-  { 
-    return; 
-  }
+  // if (device_connected)
+  // {
+  //   sendQuerycCommand();
+  // }
+  // else 
+  // { 
+  //   return; 
+  // }
 });
 
 
@@ -334,6 +334,41 @@ document.querySelector("#serial-send").addEventListener("click", async () => {
   term.write(encoder);
   writer.releaseLock();
 });
+
+// Common commands default 
+document.querySelector("#serial-send-default").addEventListener("click", async () => {
+  let payload = $("#serial-input").val();
+  $("#serial-input").val("");
+
+  if (payload !== command_history[command_history.length - 1]) {
+    command_history.push(payload);
+  }
+
+  history_position = 0;
+
+  let cr = flags.get("carriage-return-select") ? "\r" : "";
+  let nl = flags.get("newline-select") ? "\n" : "";
+
+  console.log(`${payload}${cr}${nl}\n\n\n`);
+
+  const encoder = new TextEncoder();
+  const writer = port.writable.getWriter();
+  await writer.write(encoder.encode(`${payload}${cr}${nl}`));
+  term.write(encoder);
+  writer.releaseLock();
+});
+
+// add command button 
+// document.querySelector("#add-command").addEventListener("click", async () => {
+  
+// });
+
+
+
+
+
+
+
 
 //Clear Button Code
 document.querySelector("#clear-button").addEventListener("click", () => {

@@ -28,6 +28,8 @@
           <input class="form-check-input" type="checkbox" disabled id="rts-control"> RTS </label>
         <button class="btn btn-outline options-btn" data-toggle="modal" data-target="#options-modal"
           style="margin-right: 5px;"> Options </button>
+          <button class="btn btn-outline options-btn" data-toggle="modal" data-target="#commands-modal"
+          style="margin-right: 5px;">commands</button>
         <button class="btn btn-outline options-btn" data-toggle="modal" data-target="#helpModal"
           style="margin-right: 5px;"> Help </button>
         <button id="clear-button" class="btn btn-outline-warning" style="margin-right: 5px;">Clear Console</button>
@@ -64,8 +66,12 @@
         </select>
         <button class="btn btn-outline-success my-2 my-sm-0" id="connect">Connect</button>
       </div>
+       
     </div>
   </nav>
+
+
+  
   <!-- Options Modal-->
   <div id="options-modal" class="modal fade" role="dialog">
     <div class="modal-dialog">
@@ -88,6 +94,42 @@
       </div>
     </div>
   </div>
+
+
+  <!-- Common Commands -->
+  <div id="commands-modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Common Commands</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+          <div class="command-modal-body">
+            <span class="input-group-btn">
+              <button id="add-command" class="btn btn-outline-primary" type="button" onclick="add()" value="add-command">Add command</button>
+            </span>
+            <div class="input-group" style="margin-bottom: 10px; min-height: 37px;">
+              <input type="text" class="form-control" list="command-history" placeholder="Write Serial Data Here ..."
+                id="serial-input">
+                <span class="input-group-btn">
+                  <button id="serial-send-default" class="btn btn-secondary btn-outline-info" type="button">Send</button>
+                </span>
+                <!-- <span class="input-group-btn">
+                  <button id="delete" class="btn btn-outline-warning" type="button">Delete</button>
+                </span> -->
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
   <!-- Help Modal -->
   <div id="helpModal" class="modal fade" role="dialog">
     <div class="modal-dialog modal-lg">
@@ -221,3 +263,51 @@
 </body>
 
 </html>
+
+<script>
+// add command 
+function add(){
+  $(".command-modal-body")
+  .append(" <div class='input-group' style='margin-bottom: 10px; min-height: 37px;'>\
+              <input type='text' class='form-control' list='command-history' placeholder='Write Serial Data Here ...' id='serial-input'>\
+                <span class='input-group-btn'>\
+                  <button id='delete' class='btn btn-outline-warning' type='button'>Delete</button>\
+                </span>\
+                <span class='input-group-btn'>\
+                  <button id='serial-send-default' class='btn btn-secondary btn-outline-info' type='button'>Send</button>\
+                </span>\
+            </div>\
+            </div>");
+
+  this.init();
+}
+
+// remove command
+function init(){
+  var x = document.getElementsByClassName('input-group')
+      for(var i = 0; i< x.length; i++){
+          x[i].addEventListener("click", function(e){
+            e.target.parentNode.remove();
+          })
+      }
+
+      var z = document.getElementsByClassName('command-modal-body')
+      for(var i = 0; i< z.length; i++){
+         z[i].addEventListener("input", function(e){    
+            if(e.target.value.length > 0){
+              e.target.parentNode.querySelector(".clear").style.display = "inline";
+            }else{
+              e.target.parentNode.querySelector(".clear").style.display = "none";
+            }
+         })
+      }
+  // init();
+}
+
+</script>
+
+<style>
+    .clear{ 
+      display:none;
+    }
+</style>
